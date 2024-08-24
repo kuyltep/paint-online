@@ -5,6 +5,7 @@ import Brash from "../../tools/Brash";
 import canvasState from "../../store/canvasState";
 import Rect from "../../tools/Rect";
 import Circle from "../../tools/Circle";
+import Eraser from "../../tools/Eraser";
 const Toolbar = observer(() => {
   return (
     <div className={styles.toolbar}>
@@ -21,7 +22,10 @@ const Toolbar = observer(() => {
           className={`${styles.toolbarBtn} ${styles.circle}`}
           onClick={() => toolState.setTool(new Circle(canvasState.canvas))}
         ></button>
-        <button className={`${styles.toolbarBtn} ${styles.eraser}`}></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.eraser}`}
+          onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}
+        ></button>
         <button className={`${styles.toolbarBtn} ${styles.line}`}></button>
         <input
           className={`${styles.toolbarBtn} ${styles.image}`}
