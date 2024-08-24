@@ -4,6 +4,7 @@ import toolState from "../../store/toolState";
 import Brash from "../../tools/Brash";
 import canvasState from "../../store/canvasState";
 import Rect from "../../tools/Rect";
+import Circle from "../../tools/Circle";
 const Toolbar = observer(() => {
   return (
     <div className={styles.toolbar}>
@@ -16,7 +17,10 @@ const Toolbar = observer(() => {
           className={`${styles.toolbarBtn} ${styles.rect}`}
           onClick={() => toolState.setTool(new Rect(canvasState.canvas))}
         ></button>
-        <button className={`${styles.toolbarBtn} ${styles.circle}`}></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.circle}`}
+          onClick={() => toolState.setTool(new Circle(canvasState.canvas))}
+        ></button>
         <button className={`${styles.toolbarBtn} ${styles.eraser}`}></button>
         <button className={`${styles.toolbarBtn} ${styles.line}`}></button>
         <input
