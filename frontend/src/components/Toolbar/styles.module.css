@@ -10,4 +10,51 @@
   box-shadow: 0px 4px 5px gray;
   position: absolute;
   z-index: 10;
+  padding: 7px 20px;
+}
+
+.leftBlock,
+.rightBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.toolbarBtn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.brush {
+  background: url("../../assets/brush.png") center no-repeat;
+}
+
+.rect {
+  background: url("../../assets/rect.png") center no-repeat;
+}
+.circle {
+  background: url("../../assets/circle.png") center no-repeat;
+}
+.eraser {
+  background: url("../../assets/eraser.png") center no-repeat;
+}
+.line {
+  background: url("../../assets/line.png") center no-repeat;
+}
+.image {
+  border: 1px solid black;
+}
+.undo {
+  background: url("../../assets/undo.png") center no-repeat;
+}
+
+.redo {
+  background: url("../../assets/redo.png") center no-repeat;
+}
+.save {
+  background: url("../../assets/save.png") center no-repeat;
 }
