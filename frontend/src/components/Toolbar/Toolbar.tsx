@@ -1,10 +1,21 @@
+import { observer } from "mobx-react-lite";
 import styles from "./styles.module.css";
-const Toolbar = () => {
+import toolState from "../../store/toolState";
+import Brash from "../../tools/Brash";
+import canvasState from "../../store/canvasState";
+import Rect from "../../tools/Rect";
+const Toolbar = observer(() => {
   return (
     <div className={styles.toolbar}>
       <div className={styles.leftBlock}>
-        <button className={`${styles.toolbarBtn} ${styles.brush}`}></button>
-        <button className={`${styles.toolbarBtn} ${styles.rect}`}></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.brush}`}
+          onClick={() => toolState.setTool(new Brash(canvasState.canvas))}
+        ></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.rect}`}
+          onClick={() => toolState.setTool(new Rect(canvasState.canvas))}
+        ></button>
         <button className={`${styles.toolbarBtn} ${styles.circle}`}></button>
         <button className={`${styles.toolbarBtn} ${styles.eraser}`}></button>
         <button className={`${styles.toolbarBtn} ${styles.line}`}></button>
@@ -22,6 +33,6 @@ const Toolbar = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Toolbar;

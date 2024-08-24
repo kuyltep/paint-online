@@ -16,7 +16,7 @@ export default class Brash extends Tool {
     }
   }
 
-  mouseUpHandler(e: MouseEvent) {
+  mouseUpHandler(e: any) {
     this.mouseDown = false;
   }
   mouseDownHandler(e: any) {
