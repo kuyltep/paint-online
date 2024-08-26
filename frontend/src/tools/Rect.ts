@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import toolState from "../store/toolState";
 import Tool from "./Tool";
 
 export default class Rect extends Tool {
@@ -38,8 +40,8 @@ export default class Rect extends Tool {
   }
   mouseMoveHandler(e: any) {
     if (this.mouseDown) {
-      let currentX = e.pageX - e.target.offsetLeft;
-      let currnetY = e.pageY - e.target.offsetTop;
+      const currentX = e.pageX - e.target.offsetLeft;
+      const currnetY = e.pageY - e.target.offsetTop;
       this.width = currentX - this.startX;
       this.height = currnetY - this.startY;
       this.draw(this.startX, this.width, this.startY, this.height);
@@ -65,7 +67,9 @@ export default class Rect extends Tool {
       );
       this.ctx?.beginPath();
       this.ctx?.rect(x, y, width, height);
+      this.ctx!.fillStyle = toolState.color;
       this.ctx?.fill();
+      this.ctx!.strokeStyle = toolState.color;
       this.ctx?.stroke();
     };
   }

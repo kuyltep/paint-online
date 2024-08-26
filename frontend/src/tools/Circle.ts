@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import toolState from "../store/toolState";
 import Tool from "./Tool";
 
 export default class Circle extends Tool {
@@ -38,8 +40,8 @@ export default class Circle extends Tool {
   }
   mouseMoveHandler(e: any) {
     if (this.mouseDown) {
-      let currentX = e.pageX - e.target.offsetLeft;
-      let currnetY = e.pageY - e.target.offsetTop;
+      const currentX = e.pageX - e.target.offsetLeft;
+      const currnetY = e.pageY - e.target.offsetTop;
       this.width = currentX - this.startX;
       this.height = currnetY - this.startY;
       this.draw(this.startX, this.width, this.startY, this.height);
@@ -65,7 +67,9 @@ export default class Circle extends Tool {
       );
       this.ctx?.beginPath();
       this.ctx?.arc(x, y, Math.abs(width + height) / 2, 0, 2 * Math.PI);
+      this.ctx!.strokeStyle = toolState.color;
       this.ctx?.stroke();
+      this.ctx!.fillStyle = toolState.color;
       this.ctx?.fill();
     };
   }

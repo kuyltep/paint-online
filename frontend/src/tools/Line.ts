@@ -2,7 +2,7 @@
 import toolState from "../store/toolState";
 import Tool from "./Tool";
 
-export default class Brash extends Tool {
+export default class Line extends Tool {
   mouseDown: boolean;
   constructor(canvas: HTMLCanvasElement | null) {
     super(canvas);

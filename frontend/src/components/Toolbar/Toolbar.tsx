@@ -6,6 +6,7 @@ import canvasState from "../../store/canvasState";
 import Rect from "../../tools/Rect";
 import Circle from "../../tools/Circle";
 import Eraser from "../../tools/Eraser";
+import Line from "../../tools/Line";
 const Toolbar = observer(() => {
   return (
     <div className={styles.toolbar}>
@@ -26,12 +27,18 @@ const Toolbar = observer(() => {
           className={`${styles.toolbarBtn} ${styles.eraser}`}
           onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}
         ></button>
-        <button className={`${styles.toolbarBtn} ${styles.line}`}></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.line}`}
+          onClick={() => toolState.setTool(new Line(canvasState.canvas))}
+        ></button>
         <input
           className={`${styles.toolbarBtn} ${styles.image}`}
           type="color"
           name=""
           id=""
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            toolState.setColor(e.target.value);
+          }}
         />
       </div>
       <div className={styles.rightBlock}>

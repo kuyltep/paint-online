@@ -1,3 +1,4 @@
+import toolState from "../store/toolState";
 import Tool from "./Tool";
 
 export default class Eraser extends Tool {
@@ -20,26 +21,29 @@ export default class Eraser extends Tool {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mouseUpHandler(e: any) {
     this.mouseDown = false;
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mouseDownHandler(e: any) {
     this.mouseDown = true;
     this.ctx?.beginPath();
     this.startX = e.pageX - e.target.offsetLeft;
     this.startY = e.pageY - e.target.offsetTop;
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mouseMoveHandler(e: any) {
     if (this.mouseDown) {
-      let currentX = e.pageX - e.target.offsetLeft;
-      let currnetY = e.pageY - e.target.offsetTop;
+      const currentX = e.pageX - e.target.offsetLeft;
+      const currnetY = e.pageY - e.target.offsetTop;
       this.draw(currentX, currnetY);
     }
   }
 
   draw(x: number, y: number) {
     this.ctx?.lineTo(x, y);
-    this.ctx!.lineWidth = 20;
+    this.ctx!.lineWidth = toolState.lineWidth;
     this.ctx?.stroke();
     this.ctx!.strokeStyle = "white";
   }
