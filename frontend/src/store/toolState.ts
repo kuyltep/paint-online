@@ -18,7 +18,9 @@ class ToolState {
   }
 
   setLineWidth(width: number) {
-    this.lineWidth = width;
+    if (width > 0) {
+      this.lineWidth = width;
+    }
   }
 }
 

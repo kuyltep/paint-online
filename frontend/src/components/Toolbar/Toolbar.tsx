@@ -36,14 +36,21 @@ const Toolbar = observer(() => {
           type="color"
           name=""
           id=""
+          value={toolState.color}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             toolState.setColor(e.target.value);
           }}
         />
       </div>
       <div className={styles.rightBlock}>
-        <button className={`${styles.toolbarBtn} ${styles.undo}`}></button>
-        <button className={`${styles.toolbarBtn} ${styles.redo}`}></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.undo}`}
+          onClick={() => canvasState.undo()}
+        ></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.redo}`}
+          onClick={() => canvasState.redo()}
+        ></button>
         <button className={`${styles.toolbarBtn} ${styles.save}`}></button>
       </div>
     </div>

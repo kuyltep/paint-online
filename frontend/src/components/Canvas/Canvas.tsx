@@ -12,7 +12,15 @@ const Canvas = observer(() => {
   });
   return (
     <div className={styles.canvas}>
-      <canvas ref={ref} className={styles.canvasTag} width={600} height={400} />
+      <canvas
+        onMouseDown={() => {
+          canvasState.pushToUndo(ref.current?.toDataURL() || "");
+        }}
+        ref={ref}
+        className={styles.canvasTag}
+        width={600}
+        height={400}
+      />
     </div>
   );
 });
