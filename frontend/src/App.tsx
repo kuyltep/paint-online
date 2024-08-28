@@ -1,14 +1,19 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Canvas from "./components/Canvas/Canvas";
-import SettingsBar from "./components/SettginsBar/SettingsBar";
-import Toolbar from "./components/Toolbar/Toolbar";
+import Main from "./pages/Main";
 
 function App() {
   return (
     <div className="app">
-      <Toolbar />
-      <SettingsBar />
-      <Canvas />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/:id" element={<Main />} />
+          <Route
+            path="*"
+            element={<Navigate to={`f${(+new Date()).toString(16)}`} replace />}
+          />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
