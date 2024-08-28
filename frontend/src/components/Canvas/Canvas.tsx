@@ -6,12 +6,24 @@ import toolState from "../../store/toolState";
 import Brash from "../../tools/Brash";
 import { Button, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 const Canvas = observer(() => {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const { id } = useParams();
   useEffect(() => {
     canvasState.setCanvas(ref.current);
-  });
+    axios.get("http://localhost:5000/image?id=" + id).then((response) => {
+      console.log(response.data);
+      const img = new Image();
+      img.src = response.data;
+      const ctx = ref.current?.getContext("2d");
+      const canvas = ref.current;
+      img.onload = () => {
+        ctx?.clearRect(0, 0, canvas?.width || 0, canvas?.height || 0);
+        ctx?.drawImage(img, 0, 0, canvas?.width || 0, canvas?.height || 0);
+      };
+    });
+  }, []);
 
   useEffect(() => {
     if (canvasState.username.length > 0) {
@@ -30,7 +42,7 @@ const Canvas = observer(() => {
         );
       };
       socket.onmessage = (event) => {
-        let msg = JSON.parse(event.data);
+        const msg = JSON.parse(event.data);
         console.log(msg);
         switch (msg.method) {
           case "connection":
@@ -90,6 +102,15 @@ const Canvas = observer(() => {
       <canvas
         onMouseDown={() => {
           canvasState.pushToUndo(ref.current?.toDataURL() || "");
+        }}
+        onMouseUp={() => {
+          axios
+            .post("http://localhost:5000/image?id=" + canvasState.sessionId, {
+              img: ref.current?.toDataURL() || "",
+            })
+            .then((response) => {
+              console.log(response.data);
+            });
         }}
         ref={ref}
         className={styles.canvasTag}
