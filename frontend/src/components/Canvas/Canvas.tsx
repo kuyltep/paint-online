@@ -11,13 +11,16 @@ const Canvas = observer(() => {
   const { id } = useParams();
   useEffect(() => {
     canvasState.setCanvas(ref.current);
-    toolState.setTool(new Brash(ref.current));
   });
 
   useEffect(() => {
     if (canvasState.username.length > 0) {
-      const socket = new WebSocket("ws://localhost:5000/");
+      const socket = new WebSocket(`ws://localhost:5000/`);
+      canvasState.setSocket(socket);
+      canvasState.setSessionId(id || "");
+      toolState.setTool(new Brash(ref.current, socket, id || ""));
       socket.onopen = () => {
+        console.log("Подключение установлено");
         socket.send(
           JSON.stringify({
             id: id,
@@ -26,12 +29,33 @@ const Canvas = observer(() => {
           })
         );
       };
-
-      socket.onmessage = (e) => {
-        console.log(e.data);
+      socket.onmessage = (event) => {
+        let msg = JSON.parse(event.data);
+        console.log(msg);
+        switch (msg.method) {
+          case "connection":
+            console.log(`пользователь ${msg.username} присоединился`);
+            break;
+          case "draw":
+            drawHandler(msg);
+            break;
+          case "finish":
+        }
       };
     }
   }, [canvasState.username]);
+
+  const drawHandler = (msg: object) => {
+    const figure = msg.figure;
+    const ctx = canvasState.canvas?.getContext("2d") || null;
+    switch (figure.type) {
+      case "brush":
+        Brash.draw(ctx, figure.x, figure.y);
+        break;
+      case "finish":
+        ctx?.beginPath();
+    }
+  };
 
   const [username, setUsername] = useState<string>("");
   const [modal, setmodal] = useState<boolean>(true);

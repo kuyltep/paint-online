@@ -4,8 +4,12 @@ import Tool from "./Tool";
 
 export default class Brash extends Tool {
   mouseDown: boolean;
-  constructor(canvas: HTMLCanvasElement | null) {
-    super(canvas);
+  constructor(
+    canvas: HTMLCanvasElement | null,
+    socket: WebSocket | null,
+    id: string | null
+  ) {
+    super(canvas, socket, id);
     this.mouseDown = false;
     this.listen();
   }
@@ -20,6 +24,15 @@ export default class Brash extends Tool {
 
   mouseUpHandler(e: any) {
     this.mouseDown = false;
+    this.socket?.send(
+      JSON.stringify({
+        method: "draw",
+        id: this.id,
+        figure: {
+          type: "finish",
+        },
+      })
+    );
   }
   mouseDownHandler(e: any) {
     this.mouseDown = true;
@@ -31,14 +44,25 @@ export default class Brash extends Tool {
   }
   mouseMoveHandler(e: any) {
     if (this.mouseDown) {
-      this.draw(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop);
+      // this.draw(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
+      this.socket?.send(
+        JSON.stringify({
+          method: "draw",
+          id: this.id,
+          figure: {
+            type: "brush",
+            x: e.pageX - e.target.offsetLeft,
+            y: e.pageY - e.target.offsetTop,
+          },
+        })
+      );
     }
   }
 
-  draw(x: number, y: number) {
-    this.ctx?.lineTo(x, y);
-    this.ctx!.lineWidth = toolState.lineWidth;
-    this.ctx!.strokeStyle = toolState.color;
-    this.ctx?.stroke();
+  static draw(ctx: CanvasRenderingContext2D | null, x: number, y: number) {
+    ctx?.lineTo(x, y);
+    ctx!.lineWidth = toolState.lineWidth;
+    ctx!.strokeStyle = toolState.color;
+    ctx?.stroke();
   }
 }

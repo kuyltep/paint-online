@@ -8,12 +8,30 @@ import Circle from "../../tools/Circle";
 import Eraser from "../../tools/Eraser";
 import Line from "../../tools/Line";
 const Toolbar = observer(() => {
+  const download = () => {
+    const dataUrl = canvasState.canvas?.toDataURL() || "";
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    document.body.appendChild(a);
+    a.download = canvasState.sessionId + ".jpg";
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <div className={styles.toolbar}>
       <div className={styles.leftBlock}>
         <button
           className={`${styles.toolbarBtn} ${styles.brush}`}
-          onClick={() => toolState.setTool(new Brash(canvasState.canvas))}
+          onClick={() =>
+            toolState.setTool(
+              new Brash(
+                canvasState.canvas,
+                canvasState.socket,
+                canvasState.sessionId
+              )
+            )
+          }
         ></button>
         <button
           className={`${styles.toolbarBtn} ${styles.rect}`}
@@ -51,7 +69,10 @@ const Toolbar = observer(() => {
           className={`${styles.toolbarBtn} ${styles.redo}`}
           onClick={() => canvasState.redo()}
         ></button>
-        <button className={`${styles.toolbarBtn} ${styles.save}`}></button>
+        <button
+          className={`${styles.toolbarBtn} ${styles.save}`}
+          onClick={() => download()}
+        ></button>
       </div>
     </div>
   );

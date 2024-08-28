@@ -6,14 +6,14 @@ const aWSs = WSserver.getWss();
 const PORT = process.env.PORT || 5000;
 
 app.ws("/", (ws, req) => {
-  ws.send("CONNECTED");
   ws.on("message", (msg) => {
     msg = JSON.parse(msg);
     switch (msg.method) {
       case "connection":
         connectionHandler(ws, msg);
         break;
-      case "message":
+      case "draw":
+        broadcastConnection(ws, msg);
         break;
     }
   });
@@ -26,10 +26,13 @@ const connectionHandler = (ws, msg) => {
 
 const broadcastConnection = (ws, msg) => {
   aWSs.clients.forEach((client) => {
-    client.send(`Clients with id ${msg.id} connected`);
+    client.send(
+      JSON.stringify({
+        ...msg,
+      })
+    );
   });
 };
-
 app.listen(PORT, () => {
   console.log("listen on " + `http://localhost:${PORT}/`);
 });
